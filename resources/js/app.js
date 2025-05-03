@@ -29,6 +29,12 @@ dropzone.on('success', function (file, response){
     document.querySelector('[name="image"]').value = response.imagen;
 })
 
+dropzone.on('removedfile', function (file){
+    if (file.status === Dropzone.SUCCESS) {
+        document.querySelector('[name="image"]').value = '';
+    }
+})
+
 dropzone.on('error', function (file, response){
     console.log(file);
     console.log(response);

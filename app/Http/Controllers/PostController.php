@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Post;
 
 class PostController extends Controller
 {
@@ -29,7 +30,24 @@ class PostController extends Controller
         $this->validate($request, [
             'title' => 'required|max:255',
             'descripcion' => 'required',
-            'image' => 'required|image|max:2048'
+            'image' => 'required'
         ]);
+
+        Post::create([
+            'title' => $request->title,
+            'descripcion' => $request->descripcion,
+            'image' => $request->image,
+            'user_id' => auth()->user()->id
+        ]);
+
+        // Otra forma de agregar registros
+        $post = new Post();
+        $post->title = $request->title;
+        $post->descripcion = $request->descripcion;
+        $post->image = $request->image;
+        $post->user_id = auth()->user()->id;
+        $post->save();
+
+        return redirect()->route('posts.index', auth()->user()->user);
     }
 }
